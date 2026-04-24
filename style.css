@@ -380,12 +380,7 @@ input[type=range]:hover::-webkit-slider-thumb {
   line-height: 1;
 }
 
-/* ── Pulse animation ── */
-@keyframes pulse {
-  0%   { transform: scale(1);   opacity: 0.6; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
-
+/* ── ESC hint ── */
 #esc-hint {
   position: absolute;
   top: 16px;
@@ -398,4 +393,10 @@ input[type=range]:hover::-webkit-slider-thumb {
   color: rgba(255, 255, 255, 0.15);
   pointer-events: none;
   display: none;
+}
+
+/* ── Pulse animation ── */
+@keyframes pulse {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
 }
