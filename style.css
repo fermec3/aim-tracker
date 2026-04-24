@@ -385,3 +385,17 @@ input[type=range]:hover::-webkit-slider-thumb {
   0%   { transform: scale(1);   opacity: 0.6; }
   100% { transform: scale(1.6); opacity: 0; }
 }
+
+#esc-hint {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  display: none;
+}

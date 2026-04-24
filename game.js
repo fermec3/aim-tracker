@@ -125,6 +125,8 @@
     document.getElementById('timer-display').textContent  = gameDuration + 's';
     document.getElementById('timer-display').style.color  = '#f0a030';
     document.getElementById('tracking-bar').style.width   = '0%';
+    document.getElementById('esc-hint').style.display = 'block';
+
 
     if (animId) cancelAnimationFrame(animId);
     lastTime = performance.now();
@@ -165,6 +167,7 @@
 
     document.getElementById('timer-display').textContent = '--';
     document.getElementById('timer-display').style.color = '#f0a030';
+    document.getElementById('esc-hint').style.display = 'none';
   }
 
   // ── Draw functions ──
@@ -452,6 +455,10 @@
       if (result !== undefined) document.getElementById(vid).textContent = result;
     });
   });
+
+  document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && running) endGame();
+});
 
   // Initial idle render
   ctx.fillStyle = '#080b10';
