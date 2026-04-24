@@ -136,6 +136,7 @@ html, body {
   background: rgba(8, 11, 16, 0.92);
   z-index: 20;
   backdrop-filter: blur(2px);
+  cursor: none;
 }
 
 .overlay-badge {
