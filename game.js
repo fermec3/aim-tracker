@@ -1,5 +1,5 @@
 (function () {
-  // ── Canvas setup ──
+  
   const canvas  = document.getElementById('arena');
   const ctx     = canvas.getContext('2d');
   const overlay = document.getElementById('overlay');
@@ -16,7 +16,7 @@
   resize();
   window.addEventListener('resize', resize);
 
-  // ── Game state ──
+  
   const GAME_DURATION = 60;
   const EDPI_BASE     = 320; // reference: 800 DPI × 0.40 sens
 
@@ -50,7 +50,7 @@
   let speedTimer  = 0;
   let dirTimer    = 0;
 
-  // ── Helpers ──
+  
   function eDPI() { return dpi * sens; }
   function speedFactor() { return EDPI_BASE / eDPI(); }
 
@@ -75,14 +75,14 @@
     return '★ TREINANDO — Tente acompanhar a esfera mais de perto.';
   }
 
-  // ── Mouse tracking ──
+  
 document.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect();
   mouse.x = e.clientX - rect.left;
   mouse.y = e.clientY - rect.top;
 });
 
-  // ── Game flow ──
+  
   function startGame() {
     baseSpeed    = parseFloat(document.getElementById('ctrl-speed').value);
     dpi          = parseInt(document.getElementById('ctrl-dpi').value);
@@ -164,7 +164,7 @@ document.addEventListener('mousemove', (e) => {
     document.getElementById('esc-hint').style.display    = 'none';
   }
 
-  // ── Draw functions ──
+  
   function drawGrid() {
     ctx.strokeStyle = 'rgba(20,32,48,0.8)';
     ctx.lineWidth   = 0.5;
@@ -225,7 +225,7 @@ document.addEventListener('mousemove', (e) => {
     const r = ball.r;
     ctx.save();
 
-    // Outer glow when hovering
+    
     if (isHovering) {
       const grd = ctx.createRadialGradient(ball.x, ball.y, r, ball.x, ball.y, r + 20);
       grd.addColorStop(0, 'rgba(61,186,125,0.18)');
@@ -236,14 +236,14 @@ document.addEventListener('mousemove', (e) => {
       ctx.fill();
     }
 
-    // Outer ring
+    
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, r + 5, 0, Math.PI * 2);
     ctx.strokeStyle = isHovering ? 'rgba(61,186,125,0.4)' : 'rgba(74,158,255,0.15)';
     ctx.lineWidth   = 1;
     ctx.stroke();
 
-    // Main fill
+    
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, r, 0, Math.PI * 2);
     ctx.fillStyle   = isHovering ? 'rgba(20,48,34,0.95)' : 'rgba(10,22,40,0.95)';
@@ -252,20 +252,20 @@ document.addEventListener('mousemove', (e) => {
     ctx.lineWidth   = isHovering ? 2.5 : 1.5;
     ctx.stroke();
 
-    // Inner crosshair lines
+    
     ctx.strokeStyle = isHovering ? 'rgba(61,186,125,0.4)' : 'rgba(74,158,255,0.25)';
     ctx.lineWidth   = 0.5;
     const hl        = r * 0.55;
     ctx.beginPath(); ctx.moveTo(ball.x - hl, ball.y); ctx.lineTo(ball.x + hl, ball.y); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(ball.x, ball.y - hl); ctx.lineTo(ball.x, ball.y + hl); ctx.stroke();
 
-    // Inner dot
+    
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, r * 0.22, 0, Math.PI * 2);
     ctx.fillStyle = isHovering ? 'rgba(61,186,125,0.9)' : 'rgba(74,158,255,0.6)';
     ctx.fill();
 
-    // Combo progress arc
+    
     if (combo > 1) {
       const progress = (combo - 1) / 7;
       ctx.beginPath();
@@ -330,7 +330,7 @@ document.addEventListener('mousemove', (e) => {
     }
   }
 
-  // ── Main loop ──
+  
   function loop(ts) {
     if (!running) return;
     const dt = Math.min(ts - lastTime, 50);
@@ -339,7 +339,7 @@ document.addEventListener('mousemove', (e) => {
     ctx.clearRect(0, 0, W, H);
     drawGrid();
 
-    // Random speed/direction changes
+    
     speedTimer += dt;
     dirTimer   += dt;
 
@@ -358,28 +358,23 @@ document.addEventListener('mousemove', (e) => {
       ball.vx     = v.vx;
       ball.vy     = v.vy;
     }
-
-    // Move ball
+    
     ball.x += ball.vx;
     ball.y += ball.vy;
-
-    // Bounce off walls
+    
     const pad = ball.r;
     if (ball.x - pad < 0)  { ball.x = pad;     ball.vx =  Math.abs(ball.vx); }
     if (ball.x + pad > W)  { ball.x = W - pad;  ball.vx = -Math.abs(ball.vx); }
     if (ball.y - pad < 0)  { ball.y = pad;     ball.vy =  Math.abs(ball.vy); }
     if (ball.y + pad > H)  { ball.y = H - pad;  ball.vy = -Math.abs(ball.vy); }
 
-    // Trail
     trailPoints.push({ x: ball.x, y: ball.y });
     if (trailPoints.length > 22) trailPoints.shift();
 
-    // Hover detection
     const dx   = mouse.x - ball.x;
     const dy   = mouse.y - ball.y;
     isHovering = Math.sqrt(dx * dx + dy * dy) < ball.r;
 
-    // Scoring
     totalTime++;
     if (isHovering) {
       trackingTime++;
@@ -401,7 +396,6 @@ document.addEventListener('mousemove', (e) => {
       combo = Math.max(1, combo - 0.07);
     }
 
-    // On-target event
     if (!lastHover && isHovering) {
       pulseRings.push({ x: ball.x, y: ball.y, r: ball.r, life: 30 });
       scorePopups.push({
@@ -415,7 +409,6 @@ document.addEventListener('mousemove', (e) => {
     }
     lastHover = isHovering;
 
-    // Update UI
     const acc = totalTime > 0 ? Math.round((trackingTime / totalTime) * 100) : 0;
     document.getElementById('stat-score').textContent = score;
     document.getElementById('stat-combo').textContent = 'x' + Math.floor(combo);
@@ -435,7 +428,6 @@ document.addEventListener('mousemove', (e) => {
     animId = requestAnimationFrame(loop);
   }
 
-  // ── Controls ──
   startBtn.addEventListener('click', startGame);
 
   [
@@ -454,7 +446,6 @@ document.addEventListener('mousemove', (e) => {
     if (e.key === 'Escape' && running) endGame();
   });
 
-  // Initial idle render
   ctx.fillStyle = '#080b10';
   ctx.fillRect(0, 0, W, H);
 })();
